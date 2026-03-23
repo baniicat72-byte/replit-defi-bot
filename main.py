@@ -4,6 +4,7 @@ Monitors stablecoin prices and detects profitable arbitrage opportunities
 Includes a keepalive HTTP server and automatic crash recovery
 """
 
+import os
 import requests
 import time
 import threading
@@ -53,8 +54,10 @@ POLL_INTERVAL = 30
 # File to save opportunities
 LOG_FILE = "opportunities_log.txt"
 
-# Port for the keepalive HTTP server (Replit deployment health check)
-KEEPALIVE_PORT = 8080
+# Port for the keepalive HTTP server.
+# Free hosting platforms (Railway, Render, Fly.io) inject a PORT env var.
+# In local/Replit dev we default to 8000 to avoid conflicting with other services.
+KEEPALIVE_PORT = int(os.environ.get("PORT", 8000))
 
 # =============================================================================
 # KEEPALIVE HTTP SERVER — Runs in a background thread
